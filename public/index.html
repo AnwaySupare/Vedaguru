@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VedaGuru — Ancient Wisdom for Modern Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+Devanagari:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --saffron: #FF6B00;
+  --gold: #D4A017;
+  --gold-light: #F5C842;
+  --deep-red: #8B1A1A;
+  --cream: #FDF6E3;
+  --dark-bg: #0D0500;
+  --dark-card: rgba(20,8,0,0.75);
+  --lotus: #E8799A;
+  --teal: #2A6B6B;
+  --border: rgba(212,160,23,0.18);
+  --border-hover: rgba(212,160,23,0.5);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--dark-bg);
+  color: var(--cream);
+  font-family: 'Crimson Pro', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Animated background ── */
+.bg-layer {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 20%, rgba(212,160,23,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 80%, rgba(255,107,0,0.03) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(139,26,26,0.03) 0%, transparent 70%);
+}
+
+.mandala-bg {
+  position: fixed; top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  width: 1000px; height: 1000px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg, rgba(212,160,23,0.015) 10deg, transparent 20deg,
+    transparent 20deg, rgba(255,107,0,0.01) 30deg, transparent 40deg,
+    transparent 40deg, rgba(212,160,23,0.015) 50deg, transparent 60deg,
+    transparent 60deg, rgba(255,107,0,0.01) 70deg, transparent 80deg,
+    transparent 80deg, rgba(212,160,23,0.015) 90deg, transparent 100deg,
+    transparent 100deg, rgba(255,107,0,0.01) 110deg, transparent 120deg,
+    transparent 120deg, rgba(212,160,23,0.015) 130deg, transparent 140deg,
+    transparent 140deg, rgba(255,107,0,0.01) 150deg, transparent 160deg,
+    transparent 160deg, rgba(212,160,23,0.015) 170deg, transparent 180deg,
+    transparent 180deg, rgba(255,107,0,0.01) 190deg, transparent 200deg,
+    transparent 200deg, rgba(212,160,23,0.015) 210deg, transparent 220deg,
+    transparent 220deg, rgba(255,107,0,0.01) 230deg, transparent 240deg,
+    transparent 240deg, rgba(212,160,23,0.015) 250deg, transparent 260deg,
+    transparent 260deg, rgba(255,107,0,0.01) 270deg, transparent 280deg,
+    transparent 280deg, rgba(212,160,23,0.015) 290deg, transparent 300deg,
+    transparent 300deg, rgba(255,107,0,0.01) 310deg, transparent 320deg,
+    transparent 320deg, rgba(212,160,23,0.015) 330deg, transparent 340deg,
+    transparent 340deg, rgba(255,107,0,0.01) 350deg, transparent 360deg
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: slowSpin 90s linear infinite;
+}
+@keyframes slowSpin {
+  from { transform: translate(-50%,-50%) rotate(0deg); }
+  to   { transform: translate(-50%,-50%) rotate(360deg); }
+}
+
+/* ── Layout ── */
+.app { position:relative; z-index:2; display:flex; flex-direction:column; min-height:100vh; }
+
+/* ── Top border ── */
+.rainbow-bar {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #FF6B00, #D4A017, #F5C842, #D4A017, #FF6B00, transparent);
+}
+
+/* ── Header ── */
+header {
+  text-align: center;
+  padding: 48px 24px 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.om {
+  font-size: 52px; color: var(--gold);
+  display: block; margin-bottom: 14px;
+  animation: omPulse 3s ease-in-out infinite;
+  text-shadow: 0 0 40px rgba(212,160,23,0.6);
+}
+@keyframes omPulse {
+  0%,100% { text-shadow: 0 0 20px rgba(212,160,23,0.4), 0 0 60px rgba(255,107,0,0.1); }
+  50%      { text-shadow: 0 0 60px rgba(212,160,23,0.9), 0 0 120px rgba(255,107,0,0.3); }
+}
+
+h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(26px,5vw,52px);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--saffron) 45%, var(--gold-light) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: 0.05em; line-height: 1.1;
+}
+
+.tagline { font-size:16px; color:rgba(253,246,227,0.55); margin-top:10px; font-style:italic; letter-spacing:0.06em; }
+.deva-row { font-family:'Noto Sans Devanagari',sans-serif; font-size:13px; color:rgba(212,160,23,0.45); margin-top:6px; letter-spacing:0.12em; }
+
+/* ── Controls bar ── */
+.controls-bar {
+  display: flex; flex-wrap:wrap; gap:12px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  align-items: center; justify-content: center;
+  max-width: 1100px; margin: 0 auto; width: 100%;
+}
+
+/* Language selector */
+.lang-select {
+  background: rgba(212,160,23,0.07);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--cream);
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px;
+  padding: 8px 14px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+.lang-select:hover, .lang-select:focus { border-color: var(--border-hover); }
+.lang-select option { background: #1A0A00; }
+
+/* ── Main layout ── */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+}
+
+@media(max-width:800px) {
+  .main-layout { grid-template-columns: 1fr; }
+  .sidebar { order: -1; }
+}
+
+/* ── Veda Tabs ── */
+.veda-tabs {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
+}
+
+.veda-tab {
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: transparent;
+  color: rgba(253,246,227,0.6);
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex; align-items: center; gap: 6px;
+}
+.veda-tab:hover { border-color: var(--border-hover); color: var(--gold); }
+.veda-tab.active {
+  background: rgba(212,160,23,0.12);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ── Chat container ── */
+.chat-container {
+  display: flex; flex-direction: column;
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  height: 620px;
+}
+
+.chat-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  background: linear-gradient(90deg, rgba(212,160,23,0.08), rgba(255,107,0,0.05), rgba(212,160,23,0.08));
+  border-bottom: 1px solid var(--border);
+}
+
+.chat-topbar-left { display: flex; align-items: center; gap: 10px; }
+.dot-live { width:8px; height:8px; background:#4CAF50; border-radius:50%; box-shadow:0 0 8px rgba(76,175,80,0.7); animation: livePulse 2s ease infinite; }
+@keyframes livePulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.chat-label { font-family:'Cinzel Decorative',serif; font-size:12px; color:var(--gold); letter-spacing:0.06em; }
+
+.chat-actions { display:flex; gap:8px; }
+.icon-btn {
+  background: rgba(212,160,23,0.07);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: rgba(253,246,227,0.6);
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.icon-btn:hover { border-color: var(--border-hover); color: var(--gold); background: rgba(212,160,23,0.12); }
+
+/* Messages */
+#chatMessages {
+  flex: 1; overflow-y: auto;
+  padding: 20px;
+  display: flex; flex-direction: column; gap: 18px;
+  scroll-behavior: smooth;
+}
+#chatMessages::-webkit-scrollbar { width:3px; }
+#chatMessages::-webkit-scrollbar-thumb { background:rgba(212,160,23,0.25); border-radius:2px; }
+
+.msg { display:flex; gap:12px; animation: msgIn 0.35s ease; }
+.msg.user { flex-direction: row-reverse; }
+@keyframes msgIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.av {
+  width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px; flex-shrink:0;
+  border: 1px solid rgba(212,160,23,0.25);
+}
+.av.guru-av { background: linear-gradient(135deg,rgba(212,160,23,0.2),rgba(255,107,0,0.12)); }
+.av.user-av { background: linear-gradient(135deg,rgba(42,107,107,0.3),rgba(42,107,107,0.15)); }
+
+.bubble {
+  max-width: 78%;
+  padding: 12px 16px;
+  font-size: 15px; line-height: 1.75;
+  position: relative;
+}
+.msg.guru .bubble {
+  background: rgba(212,160,23,0.06);
+  border: 1px solid rgba(212,160,23,0.15);
+  border-radius: 4px 16px 16px 16px;
+  color: #F5DEB3;
+}
+.msg.user .bubble {
+  background: rgba(42,107,107,0.18);
+  border: 1px solid rgba(42,107,107,0.28);
+  border-radius: 16px 4px 16px 16px;
+  color: var(--cream);
+}
+
+.bubble-footer {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-top: 10px; align-items: center;
+}
+
+.src-tag {
+  display: inline-block;
+  font-size: 10px; font-family:'Cinzel Decorative',serif;
+  color: var(--saffron);
+  background: rgba(255,107,0,0.08);
+  border: 1px solid rgba(255,107,0,0.2);
+  padding: 2px 8px; border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+.tts-btn {
+  background: transparent;
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  color: rgba(212,160,23,0.7);
+  transition: all 0.2s;
+}
+.tts-btn:hover { background: rgba(212,160,23,0.1); color: var(--gold); }
+.tts-btn.speaking { color: var(--saffron); border-color: var(--saffron); animation: ttsGlow 1s ease infinite; }
+@keyframes ttsGlow { 0%,100%{box-shadow:none} 50%{box-shadow:0 0 12px rgba(255,107,0,0.4)} }
+
+.wa-btn {
+  background: transparent;
+  border: 1px solid rgba(37,211,102,0.25);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  color: rgba(37,211,102,0.6);
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 4px;
+  transition: all 0.2s;
+}
+.wa-btn:hover { background: rgba(37,211,102,0.1); color: #25D366; border-color: rgba(37,211,102,0.5); }
+
+/* Typing */
+.typing-bubble { padding: 12px 16px; }
+.dots { display:flex; gap:5px; align-items:center; }
+.dot { width:7px; height:7px; border-radius:50%; background:var(--gold); animation: dotBounce 1.2s ease infinite; }
+.dot:nth-child(2){animation-delay:.2s} .dot:nth-child(3){animation-delay:.4s}
+@keyframes dotBounce { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-7px);opacity:1} }
+
+/* Input row */
+.input-row {
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 10px; align-items: flex-end;
+}
+#userInput {
+  flex:1; background:rgba(255,255,255,0.04);
+  border:1px solid var(--border); border-radius:14px;
+  padding:10px 16px; color:var(--cream);
+  font-family:'Crimson Pro',serif; font-size:15px;
+  outline:none; resize:none; min-height:46px; max-height:110px;
+  transition:border-color 0.3s; line-height:1.5;
+}
+#userInput::placeholder { color:rgba(253,246,227,0.28); font-style:italic; }
+#userInput:focus { border-color:rgba(212,160,23,0.5); }
+
+#sendBtn {
+  width:46px; height:46px;
+  background: linear-gradient(135deg, var(--saffron), var(--deep-red));
+  border:none; border-radius:50%; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; color:#fff;
+  box-shadow:0 4px 18px rgba(255,107,0,0.3);
+  transition:all 0.25s; flex-shrink:0;
+}
+#sendBtn:hover { transform:scale(1.08); box-shadow:0 6px 26px rgba(255,107,0,0.5); }
+#sendBtn:disabled { opacity:0.45; cursor:not-allowed; transform:none; }
+
+/* ── Sidebar ── */
+.sidebar { display:flex; flex-direction:column; gap:16px; }
+
+/* Hindu Calendar card */
+.card {
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.card-header {
+  padding: 12px 16px;
+  background: rgba(212,160,23,0.06);
+  border-bottom: 1px solid var(--border);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 12px; color: var(--gold);
+  letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.card-body { padding: 16px; }
+
+/* Calendar */
+.cal-today {
+  text-align: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+.cal-date-num {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 38px; color: var(--gold); line-height: 1;
+}
+.cal-month { font-size: 13px; color: rgba(253,246,227,0.55); margin-top: 3px; letter-spacing: 0.08em; }
+
+.panchang-row {
+  display: flex; justify-content: space-between;
+  font-size: 13px; padding: 5px 0;
+  border-bottom: 1px solid rgba(212,160,23,0.07);
+}
+.panchang-label { color: rgba(253,246,227,0.45); }
+.panchang-val { color: var(--gold-light); text-align: right; font-size: 12px; max-width: 60%; }
+
+.festival-pill {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(212,160,23,0.12), rgba(255,107,0,0.08));
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px; color: var(--gold);
+  margin: 4px 3px 0 0;
+}
+
+/* Chat history */
+.history-item {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: rgba(253,246,227,0.65);
+  display: flex; align-items: center; gap: 8px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.history-item:hover { border-color: var(--border-hover); color: var(--gold); background: rgba(212,160,23,0.05); }
+.history-item.active { border-color: var(--gold); color: var(--gold); background: rgba(212,160,23,0.08); }
+
+.new-chat-btn {
+  width: 100%;
+  padding: 9px;
+  background: transparent;
+  border: 1px dashed rgba(212,160,23,0.3);
+  border-radius: 10px;
+  color: rgba(253,246,227,0.5);
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px; cursor: pointer;
+  transition: all 0.2s;
+}
+.new-chat-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Suggestions */
+.suggestions-section { margin-top: 8px; }
+.sug-title { font-size:11px; letter-spacing:0.1em; color:rgba(212,160,23,0.45); text-transform:uppercase; font-family:'Cinzel Decorative',serif; margin-bottom:10px; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; }
+.chip {
+  padding:7px 14px; border:1px solid var(--border); border-radius:30px;
+  font-size:13px; color:rgba(253,246,227,0.65); cursor:pointer;
+  font-family:'Crimson Pro',serif; font-style:italic;
+  transition:all 0.22s; background:rgba(212,160,23,0.03);
+}
+.chip:hover { border-color:var(--gold); color:var(--gold); background:rgba(212,160,23,0.08); transform:translateY(-1px); }
+
+/* Footer */
+footer {
+  text-align:center; padding:28px 24px 36px;
+  border-top:1px solid var(--border);
+  font-size:13px; color:rgba(253,246,227,0.35);
+}
+.creator { color:var(--gold); font-family:'Cinzel Decorative',serif; font-size:13px; }
+.divider-row { display:flex; align-items:center; gap:12px; opacity:0.25; margin:12px 0; }
+.divider-row::before,.divider-row::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold)); }
+.divider-row::after { background:linear-gradient(90deg,var(--gold),transparent); }
+</style>
+</head>
+<body>
+<div class="bg-layer"></div>
+<div class="mandala-bg"></div>
+
+<div class="app">
+<div class="rainbow-bar"></div>
+
+<header>
+  <span class="om">ॐ</span>
+  <h1>VedaGuru</h1>
+  <p class="tagline">Ancient Wisdom for the Modern Soul</p>
+  <p class="deva-row">ऋग्वेद · सामवेद · यजुर्वेद · अथर्ववेद</p>
+</header>
+
+<!-- Controls bar -->
+<div class="controls-bar">
+  <select class="lang-select" id="langSelect" onchange="setLanguage(this.value)">
+    <option value="en">🌐 English</option>
+    <option value="hi">🇮🇳 हिंदी</option>
+    <option value="ta">தமிழ் Tamil</option>
+    <option value="te">తెలుగు Telugu</option>
+    <option value="mr">मराठी Marathi</option>
+  </select>
+
+  <div class="veda-tabs">
+    <button class="veda-tab active" data-veda="all" onclick="setVeda(this,'all')">🪔 All Vedas</button>
+    <button class="veda-tab" data-veda="rigveda" onclick="setVeda(this,'rigveda')">🌅 Rigveda</button>
+    <button class="veda-tab" data-veda="samaveda" onclick="setVeda(this,'samaveda')">🎵 Samaveda</button>
+    <button class="veda-tab" data-veda="yajurveda" onclick="setVeda(this,'yajurveda')">🔥 Yajurveda</button>
+    <button class="veda-tab" data-veda="atharvaveda" onclick="setVeda(this,'atharvaveda')">🌿 Atharvaveda</button>
+  </div>
+</div>
+
+<div class="main-layout">
+
+  <!-- ── Chat column ── -->
+  <div style="display:flex;flex-direction:column;gap:16px;">
+
+    <div class="chat-container">
+      <div class="chat-topbar">
+        <div class="chat-topbar-left">
+          <div class="dot-live"></div>
+          <span class="chat-label">Vedic Wisdom Oracle</span>
+        </div>
+        <div class="chat-actions">
+          <button class="icon-btn" onclick="clearChat()">🗑 Clear</button>
+          <button class="icon-btn" onclick="exportChat()">💾 Save</button>
+        </div>
+      </div>
+
+      <div id="chatMessages"></div>
+
+      <div class="input-row">
+        <textarea id="userInput" placeholder="Ask your question… (e.g. How do I overcome grief?)" rows="1"
+          onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button id="sendBtn" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+
+    <!-- Suggestions -->
+    <div class="suggestions-section">
+      <div class="sug-title">✦ Seek Guidance On</div>
+      <div class="chips" id="chipsEl"></div>
+    </div>
+  </div>
+
+  <!-- ── Sidebar ── -->
+  <div class="sidebar">
+
+    <!-- Hindu Calendar -->
+    <div class="card">
+      <div class="card-header">🗓 Hindu Panchang</div>
+      <div class="card-body" id="panchangBody">Loading…</div>
+    </div>
+
+    <!-- Chat history -->
+    <div class="card">
+      <div class="card-header">💬 Chat History</div>
+      <div class="card-body" id="historyBody">
+        <button class="new-chat-btn" onclick="newChat()">＋ New Conversation</button>
+        <div id="historyList" style="margin-top:10px;"></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- main-layout -->
+
+<footer>
+  <div class="divider-row">✦</div>
+  <p>Created with devotion by <span class="creator">Anway Supare</span></p>
+  <p style="margin-top:6px;font-size:11px;">🪔 Dedicated to preserving & sharing Vedic knowledge</p>
+</footer>
+</div><!-- app -->
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let currentVeda = 'all';
+let currentLang = 'en';
+let conversations = {}; // id -> { id, title, messages: [], veda, lang }
+let activeConvId = null;
+let speaking = false;
+const STORAGE_KEY = 'vedaguru_conversations';
+
+// ── Language strings ───────────────────────────────────────────────────────
+const UI = {
+  en: { welcome: "Namaste 🙏", welcomeBody: "I am <strong>VedaGuru</strong>, trained on all four Vedas.<br><br>Ask me about life's challenges, spiritual guidance, dharma, healing, or the deeper truths of existence.", tag: "Powered by 4 Vedas", placeholder: "Ask your question… (e.g. How do I find peace?)", chips: ["How to overcome fear?","Purpose of life (Vedas)","Vedic remedies for stress","Dharma in modern life","What Rigveda says about success","Healing mantras (Atharvaveda)","How to maintain harmony?"] },
+  hi: { welcome: "नमस्ते 🙏", welcomeBody: "मैं <strong>वेदगुरु</strong> हूँ, चारों वेदों का ज्ञान लिए।<br><br>जीवन की किसी भी समस्या, धर्म, स्वास्थ्य या आध्यात्मिक मार्गदर्शन के लिए पूछें।", tag: "चारों वेदों द्वारा संचालित", placeholder: "अपना प्रश्न पूछें…", chips: ["भय और चिंता को कैसे दूर करें?","जीवन का उद्देश्य क्या है?","तनाव के लिए वैदिक उपाय","आधुनिक जीवन में धर्म","मंत्र और उनका अर्थ","परिवार में सुख कैसे पाएं?"] },
+  ta: { welcome: "நமஸ்தே 🙏", welcomeBody: "நான் <strong>வேதகுரு</strong>, நான்கு வேதங்களின் ஞானத்தோடு.<br><br>வாழ்க்கையின் சவால்கள், ஆன்மீக வழிகாட்டுதல் பற்றி கேளுங்கள்.", tag: "4 வேதங்களால் இயக்கப்படுகிறது", placeholder: "உங்கள் கேள்வியை கேளுங்கள்…", chips: ["அச்சத்தை எப்படி வெல்வது?","வாழ்க்கையின் நோக்கம் என்ன?","தர்ம வாழ்க்கை எப்படி?","மன அமைதிக்கான மந்திரங்கள்"] },
+  te: { welcome: "నమస్తే 🙏", welcomeBody: "నేను <strong>వేదగురు</strong>, నాలుగు వేదాల జ్ఞానంతో.<br><br>జీవిత సమస్యలు, ధర్మం, ఆధ్యాత్మికత గురించి అడగండి.", tag: "4 వేదాల ద్వారా నడపబడింది", placeholder: "మీ ప్రశ్న అడగండి…", chips: ["భయాన్ని ఎలా అధిగమించాలి?","జీవిత లక్ష్యం ఏమిటి?","ధర్మం అంటే ఏమిటి?","ఆత్మ శాంతి మంత్రాలు"] },
+  mr: { welcome: "नमस्ते 🙏", welcomeBody: "मी <strong>वेदगुरू</strong> आहे, चारही वेदांच्या ज्ञानासह.<br><br>जीवनातील समस्या, धर्म, आरोग्य याबद्दल विचारा.", tag: "४ वेदांद्वारे चालित", placeholder: "आपला प्रश्न विचारा…", chips: ["भय कसे दूर करावे?","जीवनाचा उद्देश काय आहे?","धर्म म्हणजे काय?","मानसिक शांतीसाठी मंत्र"] }
+};
+
+// ── Init ───────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  loadConversations();
+  renderCalendar();
+  renderChips();
+  if (Object.keys(conversations).length === 0) newChat();
+  else loadLastConv();
+});
+
+// ── Veda / Language ────────────────────────────────────────────────────────
+function setVeda(el, veda) {
+  document.querySelectorAll('.veda-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentVeda = veda;
+  if (activeConvId) conversations[activeConvId].veda = veda;
+}
+
+function setLanguage(lang) {
+  currentLang = lang;
+  renderChips();
+  document.getElementById('userInput').placeholder = UI[lang]?.placeholder || UI.en.placeholder;
+  if (activeConvId) conversations[activeConvId].lang = lang;
+}
+
+function renderChips() {
+  const c = UI[currentLang]?.chips || UI.en.chips;
+  document.getElementById('chipsEl').innerHTML = c.map(t =>
+    `<span class="chip" onclick="askChip('${t.replace(/'/g,"&#39;")}')">${t}</span>`
+  ).join('');
+}
+
+function askChip(text) {
+  document.getElementById('userInput').value = text;
+  sendMessage();
+}
+
+// ── Conversation management ────────────────────────────────────────────────
+function saveConversations() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations)); } catch(e) {}
+}
+
+function loadConversations() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) conversations = JSON.parse(raw);
+  } catch(e) { conversations = {}; }
+}
+
+function loadLastConv() {
+  const ids = Object.keys(conversations);
+  if (ids.length) loadConv(ids[ids.length - 1]);
+}
+
+function newChat() {
+  const id = 'conv_' + Date.now();
+  conversations[id] = { id, title: 'New Conversation', messages: [], veda: currentVeda, lang: currentLang };
+  activeConvId = id;
+  saveConversations();
+  renderHistory();
+  renderMessages();
+  addWelcome();
+}
+
+function loadConv(id) {
+  activeConvId = id;
+  const conv = conversations[id];
+  if (!conv) return;
+  currentVeda = conv.veda || 'all';
+  currentLang = conv.lang || 'en';
+  document.getElementById('langSelect').value = currentLang;
+  document.querySelectorAll('.veda-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.veda === currentVeda);
+  });
+  renderMessages();
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  const ids = Object.keys(conversations).reverse();
+  list.innerHTML = ids.map(id => {
+    const c = conversations[id];
+    return `<div class="history-item${id===activeConvId?' active':''}" onclick="loadConv('${id}')">
+      💬 ${escHtml(c.title.slice(0,30))}
+    </div>`;
+  }).join('');
+}
+
+function renderMessages() {
+  const el = document.getElementById('chatMessages');
+  el.innerHTML = '';
+  const conv = conversations[activeConvId];
+  if (!conv || conv.messages.length === 0) { addWelcome(); return; }
+  conv.messages.forEach(m => appendBubble(m.role === 'user' ? 'user' : 'guru', m.content));
+}
+
+// ── Welcome message ────────────────────────────────────────────────────────
+function addWelcome() {
+  const l = UI[currentLang] || UI.en;
+  appendBubble('guru', `${l.welcome}<br><br>${l.welcomeBody}`, l.tag, false);
+}
+
+// ── Send message ───────────────────────────────────────────────────────────
+async function sendMessage() {
+  const input = document.getElementById('userInput');
+  const btn = document.getElementById('sendBtn');
+  const text = input.value.trim();
+  if (!text || !activeConvId) return;
+
+  const conv = conversations[activeConvId];
+  conv.messages.push({ role: 'user', content: text });
+  if (conv.title === 'New Conversation') conv.title = text.slice(0, 40);
+  saveConversations();
+
+  appendBubble('user', text);
+  input.value = ''; input.style.height = 'auto';
+  btn.disabled = true;
+  renderHistory();
+
+  // typing
+  const chat = document.getElementById('chatMessages');
+  const typing = document.createElement('div');
+  typing.className = 'msg guru'; typing.id = 'typing';
+  typing.innerHTML = `<div class="av guru-av">🪷</div><div class="bubble typing-bubble"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+  chat.appendChild(typing); chat.scrollTop = chat.scrollHeight;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: conv.messages.map(m => ({ role: m.role, content: m.content })),
+        veda: currentVeda,
+        language: currentLang
+      })
+    });
+    const data = await res.json();
+    document.getElementById('typing')?.remove();
+
+    if (data.reply) {
+      conv.messages.push({ role: 'assistant', content: data.reply });
+      saveConversations();
+      const vedaLabel = { all:'All Four Vedas', rigveda:'Rigveda', samaveda:'Samaveda', yajurveda:'Yajurveda', atharvaveda:'Atharvaveda' }[currentVeda];
+      appendBubble('guru', data.reply, vedaLabel, true);
+    } else {
+      appendBubble('guru', 'The cosmic connection was disrupted. Please try again. 🙏');
+    }
+  } catch(e) {
+    document.getElementById('typing')?.remove();
+    appendBubble('guru', 'A momentary silence in the cosmic flow. Please try again. 🙏');
+  }
+
+  btn.disabled = false;
+}
+
+// ── Render a bubble ────────────────────────────────────────────────────────
+function appendBubble(role, text, src = '', showActions = false) {
+  const chat = document.getElementById('chatMessages');
+  const d = document.createElement('div');
+  d.className = `msg ${role}`;
+
+  const msgId = 'msg_' + Date.now() + Math.random();
+  const plainText = text.replace(/<[^>]+>/g, '');
+
+  let footer = '';
+  if (role === 'guru' && showActions) {
+    const waText = encodeURIComponent(`*VedaGuru Wisdom* 🪷\n\n${plainText.slice(0,300)}...\n\n_Ask VedaGuru at your link here_`);
+    footer = `
+      <div class="bubble-footer">
+        ${src ? `<span class="src-tag">📖 ${src}</span>` : ''}
+        <button class="tts-btn" id="tts_${msgId}" onclick="speakText('${msgId}', \`${escJs(plainText)}\`)">🔊 Listen</button>
+        <a class="wa-btn" href="https://wa.me/?text=${waText}" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#25D366"><path d="M20.52 3.48A11.93 11.93 0 0012.01 0C5.44 0 .07 5.37.07 11.93c0 2.1.55 4.15 1.59 5.97L0 24l6.29-1.65A11.94 11.94 0 0012.01 24c6.57 0 11.94-5.37 11.94-11.94 0-3.19-1.24-6.19-3.43-8.44zM12 21.82a9.9 9.9 0 01-5.04-1.37l-.36-.21-3.74.98.99-3.63-.23-.37A9.9 9.9 0 012.11 12C2.11 6.54 6.55 2.1 12 2.1c2.65 0 5.14 1.03 7.01 2.9a9.88 9.88 0 012.9 7.02c0 5.46-4.44 9.8-9.91 9.8zm5.43-7.38c-.3-.15-1.76-.87-2.03-.96-.28-.1-.48-.15-.68.14-.2.3-.76.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.76-1.66-2.06-.18-.3-.02-.46.13-.6.14-.14.3-.35.44-.52.15-.17.2-.3.3-.49.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.58-.49-.5-.68-.51l-.58-.01c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.19-.57-.34z"/></svg>
+          Share
+        </a>
+      </div>`;
+  } else if (src && role === 'guru') {
+    footer = `<div class="bubble-footer"><span class="src-tag">📖 ${src}</span></div>`;
+  }
+
+  d.innerHTML = `
+    <div class="av ${role === 'guru' ? 'guru-av' : 'user-av'}">${role === 'guru' ? '🪷' : '🙏'}</div>
+    <div class="bubble" id="${msgId}">
+      ${text.replace(/\n/g, '<br>')}
+      ${footer}
+    </div>`;
+
+  chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+// ── TTS ────────────────────────────────────────────────────────────────────
+let currentUtterance = null;
+function speakText(msgId, text) {
+  const btn = document.getElementById('tts_' + msgId);
+  if (currentUtterance) {
+    window.speechSynthesis.cancel();
+    if (speaking === msgId) { speaking = null; if(btn){btn.textContent='🔊 Listen'; btn.classList.remove('speaking');} return; }
+  }
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = 0.88; utter.pitch = 0.9;
+  const langMap = { en:'en-IN', hi:'hi-IN', ta:'ta-IN', te:'te-IN', mr:'mr-IN' };
+  utter.lang = langMap[currentLang] || 'en-IN';
+
+  // prefer a calm Indian voice
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v => v.lang === utter.lang) || voices.find(v => v.lang.startsWith('en'));
+  if (preferred) utter.voice = preferred;
+
+  speaking = msgId;
+  if(btn){btn.textContent='⏹ Stop'; btn.classList.add('speaking');}
+  utter.onend = () => { speaking = null; if(btn){btn.textContent='🔊 Listen'; btn.classList.remove('speaking');} };
+  currentUtterance = utter;
+  window.speechSynthesis.speak(utter);
+}
+
+// ── Calendar / Panchang ────────────────────────────────────────────────────
+function renderCalendar() {
+  const now = new Date();
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+  // Approximate Hindu calendar data (real data would come from a Panchang API)
+  const tithis = ['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
+  const nakshatras = ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+  const yogas = ['Vishkambha','Priti','Ayushman','Saubhagya','Shobhana','Atiganda','Sukarman','Dhriti','Shula','Ganda','Vriddhi','Dhruva','Vyaghata','Harshana','Vajra','Siddhi','Vyatipata','Variyan','Parigha','Shiva','Siddha','Sadhya','Shubha','Shukla','Brahma','Indra','Vaidhriti'];
+  const karanas = ['Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Shakuni','Chatushpada','Naga','Kimstughna'];
+  const hinduMonths = ['Chaitra','Vaishakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashwin','Kartika','Margashirsha','Pausha','Magha','Phalguna'];
+
+  const d = now.getDate(), m = now.getMonth(), y = now.getFullYear();
+  const tithi = tithis[d % tithis.length];
+  const nakshatra = nakshatras[(d + m) % nakshatras.length];
+  const yoga = yogas[(d + m + y) % yogas.length];
+  const karana = karanas[d % karanas.length];
+  const hinduMonth = hinduMonths[(m + 10) % 12];
+  const samvat = y - 56; // approximate Vikram Samvat
+
+  // Upcoming festivals (hardcoded for 2026)
+  const festivals2026 = [
+    { date: new Date(2026,2,14), name:'Holi' },
+    { date: new Date(2026,2,29), name:'Ram Navami' },
+    { date: new Date(2026,3,14), name:'Baisakhi' },
+    { date: new Date(2026,3,22), name:'Akshaya Tritiya' },
+    { date: new Date(2026,8,20), name:'Navratri' },
+    { date: new Date(2026,9,2),  name:'Dussehra' },
+    { date: new Date(2026,9,20), name:'Diwali' },
+    { date: new Date(2026,10,5), name:'Kartik Purnima' },
+  ];
+
+  const upcoming = festivals2026
+    .filter(f => f.date >= now)
+    .slice(0, 3);
+
+  const daysUntil = f => Math.round((f.date - now) / 86400000);
+
+  document.getElementById('panchangBody').innerHTML = `
+    <div class="cal-today">
+      <div class="cal-date-num">${d}</div>
+      <div class="cal-month">${days[now.getDay()]}, ${months[m]} ${y}</div>
+    </div>
+    <div class="panchang-row"><span class="panchang-label">Tithi</span><span class="panchang-val">${tithi}</span></div>
+    <div class="panchang-row"><span class="panchang-label">Nakshatra</span><span class="panchang-val">${nakshatra}</span></div>
+    <div class="panchang-row"><span class="panchang-label">Yoga</span><span class="panchang-val">${yoga}</span></div>
+    <div class="panchang-row"><span class="panchang-label">Karana</span><span class="panchang-val">${karana}</span></div>
+    <div class="panchang-row"><span class="panchang-label">Hindu Month</span><span class="panchang-val">${hinduMonth}</span></div>
+    <div class="panchang-row" style="border-bottom:none"><span class="panchang-label">Samvat</span><span class="panchang-val">VS ${samvat}</span></div>
+    ${upcoming.length ? `
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(212,160,23,0.1)">
+      <div style="font-size:11px;color:rgba(212,160,23,0.45);font-family:'Cinzel Decorative',serif;letter-spacing:0.08em;margin-bottom:8px;">UPCOMING FESTIVALS</div>
+      ${upcoming.map(f => `<span class="festival-pill">🎉 ${f.name} (${daysUntil(f)}d)</span>`).join('')}
+    </div>` : ''}`;
+}
+
+// ── Utils ──────────────────────────────────────────────────────────────────
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 110) + 'px'; }
+function clearChat() {
+  if (!activeConvId) return;
+  conversations[activeConvId].messages = [];
+  conversations[activeConvId].title = 'New Conversation';
+  saveConversations();
+  renderMessages();
+  renderHistory();
+}
+function exportChat() {
+  const conv = conversations[activeConvId];
+  if (!conv) return;
+  const text = conv.messages.map(m => `[${m.role.toUpperCase()}]\n${m.content}\n`).join('\n---\n\n');
+  const blob = new Blob([`VedaGuru — ${conv.title}\n\n${text}`], {type:'text/plain'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'vedaguru-wisdom.txt'; a.click();
+}
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escJs(s) { return s.replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$'); }
+
+// Load voices for TTS
+if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+</script>
+</body>
+</html>
